@@ -1,0 +1,128 @@
+#The configuration variables that are used during the program
+export PYTHON_EXEC='@PYTHON@'
+export MCL_SHELL='@MCL@'
+#If anything but 0 is put there, the expect command will not be run
+#No timeout will be set, but expect automatically stops after ~2 weeks, so it is also prefferable not to use it for very long computation
+export EXPECT=@EXPECT@
+
+#Various folder and files locations
+export CONVERT_DIR='@CONVERT_DIR@'
+export OUTPUT_DIR='@OUTPUT_DIR@'
+export INPUT_DIR='@INPUT_DIR@'
+export RAW_INPUT_DIR='@RAW_INPUT_DIR@'
+export RAW_GROUND_TRUTH_DIR='@RAW_GROUND_TRUTH_DIR@'
+export TRANSLATION_DIR='@TRANSLATION_DIR@'
+export METHOD_DIR='@METHOD_DIR@'
+export PREPROCESSING_DIR='@PREPROCESSING_DIR@'
+export ANALYSIS_DIR='@ANALYSIS_DIR@'
+export RESULTS_DIR='@RESULTS_DIR@'
+export TMP_DIR='@TMP_DIR@'
+export GROUND_TRUTH_DIR='@GROUND_TRUTH_DIR@'
+export TOOLS_DIR='@TOOLS_DIR@'
+export LOG_FILE='@LOG_FILE@'
+
+#The accepted input graph formats
+export FORMATS=".txt .csv .gml .graphml"
+
+#Behaviour configuration
+export METHOD_TIMEOUT=1000 #the timeout of community detection methods (in s)
+export PARALLEL=0 #Should the methods be run in parallel?
+export NB_PROCESS=2
+export VERBOSE=1 #Light verbose
+export VERBOSE_FULL=0 #High-density verbose
+
+#Execution subparts
+export A_CORRELATION=1
+export A_QUALITY=1
+export A_FULL_REPORT=1
+export C_VISUALISATION=1
+export C_TEX=1
+export C_QUOTIENT=1
+
+#Whitelists
+export WL_RAW='' #Raw inputs to use
+export WL_INPUT='@WL_INPUT@' #Graphs to use
+export WL_METHOD='@WL_METHOD@' #Methods to use
+export WL_QF="modularity local_modularity modularity_density clust_coef permanence s_compactness s_1-cond s_FOMD sur sign s_f-odf s_cut_ratio" #Quality functions to use
+export WL_CM="nmi fbcubed omega_index" #The clustering comparison method
+
+#Due to a lack of dependancies, some methods may be ignored
+export EXCEPT_METHOD='@EXCEPT_METHOD@'
+
+#Change the root dir of the dir variables (simple appen)
+root() {   
+    export CONVERT_DIR=$1/$CONVERT_DIR
+    export OUTPUT_DIR=$1/$OUTPUT_DIR
+    export INPUT_DIR=$1/$INPUT_DIR
+    export METHOD_DIR=$1/$METHOD_DIR
+    export ANALYSIS_DIR=$1/$ANALYSIS_DIR
+    export RESULTS_DIR=$1/$RESULTS_DIR
+    export TMP_DIR=$1/$TMP_DIR
+    export LOG_FILE=$1/$LOG_FILE
+}
+
+#Print functions
+err() {
+    printf "["$(date +"%T")"]" >> $LOG_FILE
+    echo "Error : "$@ >> $LOG_FILE
+    >&2 echo "Error : "$@
+    exit 1
+}
+
+verb() {
+    printf "["$(date +"%T")"]" >> $LOG_FILE
+    if [ $VERBOSE != 0 ]
+    then
+	echo $@ | tee -a $LOG_FILE
+    else
+	echo $@ >> $LOG_FILE
+    fi
+}
+
+verb_f() {
+    printf "["$(date +"%T")"]" >> $LOG_FILE
+    if [ $VERBOSE_FULL != 0 ]
+    then
+	echo $@ | tee -a $LOG_FILE
+    else
+	echo $@ >> $LOG_FILE
+    fi
+}
+
+
+lock() {
+    #Check locks
+    touch $TMP_DIR/tmp
+    LOCKED=1
+    while [ $LOCKED != 0 ]
+    do
+	lock=0
+	while [ $LOCKED != 0 ] && [ $lock -lt $NB_PROCESS ]
+	do
+	    lock=$(( lock + 1 ))
+	    if ln -s $TMP_DIR/tmp $TMP_DIR/$lock 2> /dev/null
+	    then
+		verb_f "Creating parallel lock #$lock"
+		LOCKED=0
+	    fi
+	done
+	if [ $LOCKED != 0 ]
+	then
+	    sleep 2
+	fi
+    done
+}
+
+unlock() {
+    TODEL=1
+    i=0
+    while [ $TODEL != 0 ] && [ $i -lt $NB_PROCESS ]
+    do
+	i=$(( i + 1 ))
+	if rm $TMP_DIR/$i 2> /dev/null
+	then
+	    verb_f "Removing parallel lock #$i"
+	    TODEL=0
+	fi
+    done
+}

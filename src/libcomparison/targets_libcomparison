@@ -1,0 +1,3 @@
+libcomparison_la_SOURCES += comparison/FBCubedCM.cpp \
+comparison/NmiCM.cpp \
+comparison/OmegaIndexCM.cpp

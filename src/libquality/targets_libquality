@@ -1,0 +1,16 @@
+libquality_la_SOURCES += quality/ClustCoefSCQF.cpp \
+quality/NormClustCoefSCQF.cpp \
+quality/ConductanceSCQF.cpp \
+quality/NormConductanceSCQF.cpp \
+quality/ModularityQF.cpp \
+quality/CompactnessSCQF.cpp \
+quality/FOMDSCQF.cpp \
+quality/1-CutRatioSCQF.cpp \
+quality/FlakeODFSCQF.cpp \
+quality/SurpriseQF.cpp \
+quality/SignificanceQF.cpp \
+quality/1-CondSCQF.cpp \
+quality/ClustCoefSVQF.cpp \
+quality/PermanenceSVQF.cpp \
+quality/LocalModularityQF.cpp \
+quality/ModularityDensityQF.cpp

@@ -1,0 +1,14 @@
+0.1.2 (working):
+  -The random seed of algs_quality is now initialised from the current time
+  -algs_quality can now take an overlapping membership as an input
+  -correction of a bug that prevented the "ranks" files to be generated
+  -correction of a bug that set all sessions to "000001"
+  -correction of an error in the local modularity computation
+
+0.1.1:
+  -Uniformisation of method description
+  -Add SCD method
+  -Correction of "full report" executable documentation
+
+0.1:
+	-project initialisation

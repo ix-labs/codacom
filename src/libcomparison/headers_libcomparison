@@ -1,0 +1,3 @@
+noinst_HEADERS += comparison/FBCubedCM.hpp \
+comparison/NmiCM.hpp \
+comparison/OmegaIndexCM.hpp

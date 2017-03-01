@@ -1,0 +1,9 @@
+set -e
+DESCRIPTION="Conclude algorithm, from De Meo&al., 'Mixing local and global information for community detection in large networks', 2014"
+. ../template.sh
+
+base=$(basename -s .txt $INPUT_GRAPH)
+java -jar CONCLUDE.jar $INPUT_GRAPH "$base"_conclude " " 2> /dev/null
+sed -e  '$ d' "$base"_conclude > $TMP_DIR/"$base"_conclude #Removes the last line
+$PYTHON_EXEC $TOOLS_DIR/communities_to_membership.py $TMP_DIR/"$base"_conclude $OUTPUT_DIR/$base\_conclude
+rm $TMP_DIR/"$base"_conclude "$base"_conclude

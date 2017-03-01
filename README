@@ -1,0 +1,15 @@
+This project high depends on the C version of igraph (http://igraph.org/c/), and some optional components depend on the boost graph library and mcl.
+
+Tested install on Ubuntu 14.04 (start in the root directory of the project) :
+sudo apt-get install libigraph0 mcl
+./configure
+make
+
+On OSX (see the igraph documentation for more information on homebrew):
+brew install homebrew/science/igraph
+./configure LDFLAGS=-L/usr/local/lib CPPFLAGS=-I/usr/local/include
+make
+
+Note : if the "make" command gives you an error with aclocal, try
+touch configure.ac aclocal.m4 configure Makefile.am Makefile.in
+And then rerun the configure and make.

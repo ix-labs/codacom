@@ -1,0 +1,12 @@
+set -e
+DESCRIPTION="The louvain method, from Blondel&al., 'Fast unfolding of communities in large networks', 2008"
+. ../template.sh
+
+base=$(basename -s .txt $INPUT_GRAPH)
+./convert -i $INPUT_GRAPH -o $TMP_DIR/$base.louvain
+./community $TMP_DIR/$base.louvain -l -1 > $TMP_DIR/$base.tree 2> /dev/null
+#Get the maximum level of the tree
+l=$(./hierarchy $TMP_DIR/$base.tree | wc -l)
+l=$(expr $l - 2)
+./hierarchy $TMP_DIR/$base.tree -l $l > $OUTPUT_DIR/$base\_louvain
+rm $TMP_DIR/$base.tree $TMP_DIR/$base.louvain

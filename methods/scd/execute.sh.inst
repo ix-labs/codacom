@@ -1,0 +1,8 @@
+set -e
+DESCRIPTION="The Scalable Community Detection, from Prat-Pérez&al., 'High Quality, Scalable and Parallel Community Detection for Large Real Graphs', 2014"
+. ../template.sh
+
+base=$(basename -s .txt $INPUT_GRAPH)
+build/scd -f $INPUT_GRAPH -o $TMP_DIR/$base\_scd > /dev/null
+$PYTHON_EXEC $TOOLS_DIR/communities_to_membership.py $TMP_DIR/$base\_scd $OUTPUT_DIR/$base\_scd
+rm $TMP_DIR/$base\_scd

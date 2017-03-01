@@ -1,0 +1,12 @@
+#ifndef @@NAME@@_SCQF
+#define @@NAME@@_SCQF
+
+#include "AbstractSCQF.hpp"
+
+class @@NAME@@SCQF : public AbstractSCQF {
+public:
+  @@NAME@@SCQF();
+  double apply(igraph_t* graph, std::vector<long> & membership, std::deque<long> & nodes);
+};
+
+#endif

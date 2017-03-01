@@ -1,0 +1,16 @@
+noinst_HEADERS += quality/ClustCoefSCQF.hpp \
+quality/NormClustCoefSCQF.hpp \
+quality/NormConductanceSCQF.hpp \
+quality/ConductanceSCQF.hpp \
+quality/ModularityQF.hpp \
+quality/CompactnessSCQF.hpp \
+quality/FOMDSCQF.hpp \
+quality/1-CutRatioSCQF.hpp \
+quality/FlakeODFSCQF.hpp \
+quality/SurpriseQF.hpp \
+quality/SignificanceQF.hpp \
+quality/1-CondSCQF.hpp \
+quality/ClustCoefSVQF.hpp \
+quality/PermanenceSVQF.hpp \
+quality/LocalModularityQF.hpp \
+quality/ModularityDensityQF.hpp
